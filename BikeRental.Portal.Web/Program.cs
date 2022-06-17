@@ -1,6 +1,6 @@
-using BikeRental.Portal.Web.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using BikeRental.Portal.Web.Brokers.Apis;
+using FluentAssertions.Common;
+using RESTFulSense.Clients;
 
 namespace Company.WebApplication1;
 public class Program
@@ -10,9 +10,15 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddRazorPages();
+        builder.Services.AddRazorPages(options =>
+        {
+            options.RootDirectory = "/Views/Pages";
+        });
+
         builder.Services.AddServerSideBlazor();
-        builder.Services.AddSingleton<WeatherForecastService>();
+        builder.Services.AddScoped<IApiBroker, ApiBroker>();
+        builder.Services.AddLogging();
+        builder.Services.AddHttpClient();
 
         var app = builder.Build();
 
@@ -20,7 +26,6 @@ public class Program
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
 
