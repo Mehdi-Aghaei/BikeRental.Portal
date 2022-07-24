@@ -1,6 +1,4 @@
 using BikeRental.Portal.Web.Brokers.Apis;
-using FluentAssertions.Common;
-using RESTFulSense.Clients;
 
 namespace Company.WebApplication1;
 public class Program
