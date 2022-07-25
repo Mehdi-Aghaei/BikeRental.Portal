@@ -1,4 +1,6 @@
 using BikeRental.Portal.Web.Brokers.Apis;
+using BikeRental.Portal.Web.Brokers.Loggings;
+using BikeRental.Portal.Web.Services.Foundations;
 
 namespace Company.WebApplication1;
 public class Program
@@ -14,7 +16,8 @@ public class Program
         });
 
         builder.Services.AddServerSideBlazor();
-        builder.Services.AddScoped<IApiBroker, ApiBroker>();
+        AddBrokers(builder);
+        AddServices(builder);
         builder.Services.AddLogging();
         builder.Services.AddHttpClient();
 
@@ -33,9 +36,21 @@ public class Program
 
         app.UseRouting();
 
+        app.UseAuthentication();
+
         app.MapBlazorHub();
         app.MapFallbackToPage("/_Host");
 
         app.Run();
+    }
+
+    private static void AddBrokers(WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<IApiBroker, ApiBroker>();
+        builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+    } 
+    private static void AddServices(WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<IBikeService, BikeService>();
     }
 }
