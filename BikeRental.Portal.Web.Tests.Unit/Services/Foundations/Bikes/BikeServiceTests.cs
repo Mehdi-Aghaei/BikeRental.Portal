@@ -59,4 +59,10 @@ public partial class BikeServiceTests
 
         return filler;
     }
+    private static Dictionary<string, List<string>> CreateRandomDictionary()
+    {
+        var filler = new Filler<Dictionary<string, List<string>>>();
+
+        return filler.Create();
+    }
 }

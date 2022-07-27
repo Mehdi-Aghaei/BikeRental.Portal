@@ -1,7 +1,9 @@
-﻿using BikeRental.Portal.Web.Models.Bikes;
+﻿using System.Net.Http;
+using BikeRental.Portal.Web.Models.Bikes;
 using BikeRental.Portal.Web.Models.Bikes.Exceptions;
 using FluentAssertions;
 using Moq;
+using RESTFulSense.Exceptions;
 using Xeptions;
 
 namespace BikeRental.Portal.Web.Tests.Unit.Services.Foundations.Bikes;
@@ -42,6 +44,54 @@ public partial class BikeServiceTests
         this.loggingBrokerMock.Verify(broker =>
             broker.LogCritical(It.Is(SameExceptionAs(
                 expectedBikeDependencyException))),
+                    Times.Once);
+
+        this.apiBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowDependencyValidationExceptionOnAddIfBadRequestExceptionOccursAndLogItAsync()
+    {
+        // given
+        Bike randomBike = CreateRandomBike();
+        var randomMessage = GetRandomString();
+        var httpResponseMessage = new HttpResponseMessage();
+
+        var randomDictionary = CreateRandomDictionary();
+
+        var httpResponseBadRequestException =
+            new HttpResponseBadRequestException(httpResponseMessage, randomMessage);
+
+        httpResponseBadRequestException.AddData(randomDictionary);
+
+        var invalidBikeException = 
+            new InvalidBikeException(httpResponseBadRequestException, randomDictionary);
+
+        var expectedBikeDependencyValidationException =
+            new BikeDependencyValidationException(invalidBikeException);
+
+        this.apiBrokerMock.Setup(broker =>
+            broker.PostBikeAsync(It.IsAny<Bike>()))
+                .ThrowsAsync(httpResponseBadRequestException);
+
+        // when
+        ValueTask<Bike> addBikeTask =
+            this.bikeService.AddBikeAsync(randomBike);
+
+        BikeDependencyValidationException actualBikeDependencyValidationException =
+            await Assert.ThrowsAsync<BikeDependencyValidationException>(addBikeTask.AsTask);
+
+        // then
+        actualBikeDependencyValidationException.Should().BeEquivalentTo(expectedBikeDependencyValidationException);
+
+        this.apiBrokerMock.Verify(broker =>
+            broker.PostBikeAsync(It.IsAny<Bike>()), 
+                Times.Once);
+
+        this.loggingBrokerMock.Verify(broker =>
+            broker.LogError(It.Is(SameExceptionAs(
+                expectedBikeDependencyValidationException))),
                     Times.Once);
 
         this.apiBrokerMock.VerifyNoOtherCalls();
