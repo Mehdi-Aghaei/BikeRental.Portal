@@ -48,7 +48,7 @@ public class Program
     {
         builder.Services.AddTransient<IApiBroker, ApiBroker>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
-    } 
+    }
     private static void AddServices(WebApplicationBuilder builder)
     {
         builder.Services.AddTransient<IBikeService, BikeService>();

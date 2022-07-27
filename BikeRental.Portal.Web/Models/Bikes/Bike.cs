@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace BikeRental.Portal.Web.Models.Bikes;
+﻿namespace BikeRental.Portal.Web.Models.Bikes;
 public class Bike
 {
     public int Id { get; set; }

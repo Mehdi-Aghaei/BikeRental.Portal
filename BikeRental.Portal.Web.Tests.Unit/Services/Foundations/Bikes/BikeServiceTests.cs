@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using BikeRental.Portal.Web.Brokers.Apis;
 using BikeRental.Portal.Web.Brokers.Loggings;
 using BikeRental.Portal.Web.Models.Bikes;
@@ -24,9 +19,9 @@ public partial class BikeServiceTests
     {
         this.apiBrokerMock = new Mock<IApiBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
-        
+
         this.bikeService = new BikeService(
-            this.apiBrokerMock.Object, 
+            this.apiBrokerMock.Object,
             this.loggingBrokerMock.Object);
     }
 
@@ -46,7 +41,7 @@ public partial class BikeServiceTests
     private static string GetRandomString() =>
         new MnemonicString().GetValue();
 
-    private static Expression<Func<Xeption,bool>> SameExceptionAs(Xeption expectedException) =>
+    private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
            actucalException => actucalException.SameExceptionAs(expectedException);
 
 
