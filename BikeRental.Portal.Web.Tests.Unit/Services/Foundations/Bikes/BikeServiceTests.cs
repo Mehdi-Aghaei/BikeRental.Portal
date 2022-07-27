@@ -9,6 +9,7 @@ using BikeRental.Portal.Web.Brokers.Loggings;
 using BikeRental.Portal.Web.Models.Bikes;
 using BikeRental.Portal.Web.Services.Foundations.Bikes;
 using Moq;
+using RESTFulSense.Exceptions;
 using Tynamix.ObjectFiller;
 using Xeptions;
 
@@ -28,6 +29,22 @@ public partial class BikeServiceTests
             this.apiBrokerMock.Object, 
             this.loggingBrokerMock.Object);
     }
+
+    public static TheoryData CriticalDependencyExceptions()
+    {
+        string someMessage = GetRandomString();
+        var someResponseMessage = new HttpResponseMessage();
+
+        return new TheoryData<Xeption>()
+            {
+                new HttpResponseUrlNotFoundException(someResponseMessage, someMessage),
+                new HttpResponseUnauthorizedException(someResponseMessage, someMessage),
+                new HttpResponseForbiddenException(someResponseMessage, someMessage),
+            };
+    }
+
+    private static string GetRandomString() =>
+        new MnemonicString().GetValue();
 
     private static Expression<Func<Xeption,bool>> SameExceptionAs(Xeption expectedException) =>
            actucalException => actucalException.SameExceptionAs(expectedException);
