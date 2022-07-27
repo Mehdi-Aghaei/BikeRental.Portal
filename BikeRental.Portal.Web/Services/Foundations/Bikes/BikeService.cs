@@ -8,7 +8,7 @@ using BikeRental.Portal.Web.Brokers.Loggings;
 using BikeRental.Portal.Web.Models.Bikes;
 
 namespace BikeRental.Portal.Web.Services.Foundations.Bikes;
-public class BikeService : IBikeService
+public partial class BikeService : IBikeService
 {
     private readonly IApiBroker apiBroker;
     private readonly ILoggingBroker loggingBroker;
