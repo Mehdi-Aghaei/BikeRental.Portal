@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RESTFulSense" Version="2.6.0" />
+    <PackageReference Include="RESTFulSense" Version="2.7.0" />
+    <PackageReference Include="Xeption" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Bikes\" />
-    <Folder Include="Services\" />
+    <Folder Include="Models\Views\" />
+    <Folder Include="Services\Views\" />
     <Folder Include="Views\Bases\" />
   </ItemGroup>
 
