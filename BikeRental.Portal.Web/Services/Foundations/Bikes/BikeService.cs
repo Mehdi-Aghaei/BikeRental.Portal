@@ -7,7 +7,7 @@ using BikeRental.Portal.Web.Brokers.Apis;
 using BikeRental.Portal.Web.Brokers.Loggings;
 using BikeRental.Portal.Web.Models.Bikes;
 
-namespace BikeRental.Portal.Web.Services.Foundations;
+namespace BikeRental.Portal.Web.Services.Foundations.Bikes;
 public class BikeService : IBikeService
 {
     private readonly IApiBroker apiBroker;
@@ -19,8 +19,6 @@ public class BikeService : IBikeService
         this.loggingBroker = loggingBroker;
     }
 
-    public ValueTask<Bike> AddBikeAsync(Bike bike)
-    {
-        throw new NotImplementedException();
-    }
+    public async ValueTask<Bike> AddBikeAsync(Bike bike) =>
+        await this.apiBroker.PostBikeAsync(bike);
 }

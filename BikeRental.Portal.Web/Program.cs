@@ -1,6 +1,6 @@
 using BikeRental.Portal.Web.Brokers.Apis;
 using BikeRental.Portal.Web.Brokers.Loggings;
-using BikeRental.Portal.Web.Services.Foundations;
+using BikeRental.Portal.Web.Services.Foundations.Bikes;
 
 namespace Company.WebApplication1;
 public class Program

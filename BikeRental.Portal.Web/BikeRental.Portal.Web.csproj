@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <Folder Include="Models\Bikes\" />
+    <Folder Include="Models\Views\" />
+    <Folder Include="Services\Views\" />
     <Folder Include="Views\Bases\" />
   </ItemGroup>
 

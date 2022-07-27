@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BikeRental.Portal.Web.Brokers.Apis;
 using BikeRental.Portal.Web.Brokers.Loggings;
 using BikeRental.Portal.Web.Models.Bikes;
-using BikeRental.Portal.Web.Services.Foundations;
+using BikeRental.Portal.Web.Services.Foundations.Bikes;
 using Moq;
 using Tynamix.ObjectFiller;
 
@@ -27,7 +27,18 @@ public partial class BikeServiceTests
             this.loggingBrokerMock.Object);
     }
 
-    private static Filler<Bike> CreateBikeFiller() =>
-        new Filler<Bike>();
+    private static DateTimeOffset GetRandomDateTimeOffset() =>
+        new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+    private static Bike CreateRandomBike() =>
+        CreateBikeFiller(GetRandomDateTimeOffset()).Create();
+
+    private static Filler<Bike> CreateBikeFiller(DateTimeOffset dateTime)
+    {
+        var filler = new Filler<Bike>();
+
+        filler.Setup().OnType<DateTimeOffset>().Use(dateTime);
+
+        return filler;
+    }
 }
