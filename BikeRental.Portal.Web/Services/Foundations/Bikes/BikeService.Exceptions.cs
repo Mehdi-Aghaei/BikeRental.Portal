@@ -41,16 +41,14 @@ public partial class BikeService
 
             throw CreateAndLogCriticalDependencyException(failedBikeDependencyException);
         }
-    }
+        catch(HttpResponseBadRequestException httpResponseBadRequestException)
+        {
+            var invalidBikeException = new InvalidBikeException(
+                   httpResponseBadRequestException,
+                   httpResponseBadRequestException.Data);
 
-    private BikeDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
-    {
-        var bikeDependencyException = 
-            new BikeDependencyException(exception);
-
-        this.loggingBroker.LogCritical(bikeDependencyException);
-
-        return bikeDependencyException;
+            throw CreateAndLogDependencyValidationException(invalidBikeException);
+        }
     }
 
     private BikeValidationException CreateAndLogValidationException(Xeption exception)
@@ -61,5 +59,25 @@ public partial class BikeService
         this.loggingBroker.LogError(bikeValidationException);
 
         return bikeValidationException;
+    }
+
+    private BikeDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+    {
+        var bikeDependencyException =
+            new BikeDependencyException(exception);
+
+        this.loggingBroker.LogCritical(bikeDependencyException);
+
+        return bikeDependencyException;
+    }
+
+    private BikeDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+    {
+        var bikeDependencyValidationException =
+            new BikeDependencyValidationException(exception);
+
+        this.loggingBroker.LogError(bikeDependencyValidationException);
+
+        return bikeDependencyValidationException;
     }
 }
