@@ -103,21 +103,22 @@ public partial class BikeServiceTests
     {
         // given
         Bike randomBike = CreateRandomBike();
-        string someRandomMessage = GetRandomString();
-        var httpResponseMessage = new HttpResponseMessage();
+        string someMessage = GetRandomString();
+        var someResponseMessage = new HttpResponseMessage();
 
-        var httpResponceException =
-            new HttpRequestException();
+        var httpResponseException =
+            new HttpResponseException(someResponseMessage, someMessage);
+
 
         var failedBikeDependencyException =
-            new FailedBikeDependencyException(httpResponceException);
+            new FailedBikeDependencyException(httpResponseException);
 
         var expectedBikeDependencyException =
             new BikeDependencyException(failedBikeDependencyException);
 
         this.apiBrokerMock.Setup(broker =>
             broker.PostBikeAsync(It.IsAny<Bike>()))
-                .ThrowsAsync(httpResponceException);
+                .ThrowsAsync(httpResponseException);
 
         // when
         ValueTask<Bike> addBikeTask =

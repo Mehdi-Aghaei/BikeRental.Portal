@@ -49,6 +49,13 @@ public partial class BikeService
 
             throw CreateAndLogDependencyValidationException(invalidBikeException);
         }
+        catch(HttpResponseException HttpResponseException)
+        {
+            var failedBikeDependencyException =
+                new FailedBikeDependencyException(HttpResponseException);
+
+            throw CreateAndLogDependencyException(failedBikeDependencyException);
+        }
     }
 
     private BikeValidationException CreateAndLogValidationException(Xeption exception)
@@ -80,4 +87,15 @@ public partial class BikeService
 
         return bikeDependencyValidationException;
     }
+
+    private BikeDependencyException CreateAndLogDependencyException(Xeption exception)
+    {
+        var bikeDependencyException =
+            new BikeDependencyException(exception);
+
+        this.loggingBroker.LogError(bikeDependencyException);
+
+        return bikeDependencyException;
+    }
+
 }
