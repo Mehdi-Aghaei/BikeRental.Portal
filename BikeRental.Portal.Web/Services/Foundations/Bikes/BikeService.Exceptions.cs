@@ -97,5 +97,4 @@ public partial class BikeService
 
         return bikeDependencyException;
     }
-
 }
