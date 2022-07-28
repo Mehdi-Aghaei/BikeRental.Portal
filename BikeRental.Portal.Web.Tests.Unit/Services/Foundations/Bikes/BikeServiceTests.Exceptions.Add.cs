@@ -97,4 +97,48 @@ public partial class BikeServiceTests
         this.apiBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldThrowDependencyExceptionOnAddIfErrorOccursAndLogItAsync()
+    {
+        // given
+        Bike randomBike = CreateRandomBike();
+        string someRandomMessage = GetRandomString();
+        var httpResponseMessage = new HttpResponseMessage();
+
+        var httpResponceException =
+            new HttpRequestException();
+
+        var failedBikeDependencyException =
+            new FailedBikeDependencyException(httpResponceException);
+
+        var expectedBikeDependencyException =
+            new BikeDependencyException(failedBikeDependencyException);
+
+        this.apiBrokerMock.Setup(broker =>
+            broker.PostBikeAsync(It.IsAny<Bike>()))
+                .ThrowsAsync(httpResponceException);
+
+        // when
+        ValueTask<Bike> addBikeTask =
+            this.bikeService.AddBikeAsync(randomBike);
+
+        var actualBikeDependencyException =
+            await Assert.ThrowsAsync<BikeDependencyException>(addBikeTask.AsTask);
+
+        // then
+        actualBikeDependencyException.Should().BeEquivalentTo(expectedBikeDependencyException);
+
+        this.apiBrokerMock.Verify(broker =>
+            broker.PostBikeAsync(It.IsAny<Bike>()),
+                Times.Once);
+
+        this.loggingBrokerMock.Verify(broker =>
+            broker.LogError(It.Is(SameExceptionAs(
+                expectedBikeDependencyException))),
+                    Times.Once);
+
+        this.apiBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
