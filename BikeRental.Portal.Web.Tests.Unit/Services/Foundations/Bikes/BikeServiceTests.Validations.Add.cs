@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BikeRental.Portal.Web.Brokers.Apis;
-using BikeRental.Portal.Web.Brokers.Loggings;
-using BikeRental.Portal.Web.Models.Bikes;
+﻿using BikeRental.Portal.Web.Models.Bikes;
 using BikeRental.Portal.Web.Models.Bikes.Exceptions;
-using BikeRental.Portal.Web.Services.Foundations;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 
 namespace BikeRental.Portal.Web.Tests.Unit.Services.Foundations.Bikes;
@@ -30,7 +21,7 @@ public partial class BikeServiceTests
         // when
         ValueTask<Bike> addBikeTask = this.bikeService.AddBikeAsync(nullBike);
 
-        var actualBikeValidationException = 
+        var actualBikeValidationException =
             await Assert.ThrowsAsync<BikeValidationException>(
                 addBikeTask.AsTask);
 
@@ -43,7 +34,7 @@ public partial class BikeServiceTests
                     Times.Once);
 
         this.apiBrokerMock.Verify(broker =>
-            broker.PostBikeAsync(It.IsAny<Bike>()), 
+            broker.PostBikeAsync(It.IsAny<Bike>()),
                 Times.Never);
 
         this.loggingBrokerMock.VerifyNoOtherCalls();

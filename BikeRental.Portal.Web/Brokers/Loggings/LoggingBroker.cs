@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BikeRental.Portal.Web.Brokers.Loggings;
+﻿namespace BikeRental.Portal.Web.Brokers.Loggings;
 public class LoggingBroker : ILoggingBroker
 {
     private readonly ILogger<LoggingBroker> logger;

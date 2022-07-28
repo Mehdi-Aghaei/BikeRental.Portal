@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xeptions;
+﻿using Xeptions;
 
 namespace BikeRental.Portal.Web.Models.Bikes.Exceptions;
 public class BikeValidationException : Xeption
 {
-	public BikeValidationException(Xeption innerException)
-		: base("Bike validation errors occurred, please try again.", innerException)
-	{ }
+    public BikeValidationException(Xeption innerException)
+        : base("Bike validation errors occurred, please try again.", innerException)
+    { }
 }

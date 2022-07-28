@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using BikeRental.Portal.Web.Brokers.Apis;
 using BikeRental.Portal.Web.Brokers.Loggings;
 using BikeRental.Portal.Web.Models.Bikes;
 using BikeRental.Portal.Web.Services.Foundations.Bikes;
 using Moq;
+using RESTFulSense.Exceptions;
 using Tynamix.ObjectFiller;
 using Xeptions;
 
@@ -23,13 +19,29 @@ public partial class BikeServiceTests
     {
         this.apiBrokerMock = new Mock<IApiBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
-        
+
         this.bikeService = new BikeService(
-            this.apiBrokerMock.Object, 
+            this.apiBrokerMock.Object,
             this.loggingBrokerMock.Object);
     }
 
-    private static Expression<Func<Xeption,bool>> SameExceptionAs(Xeption expectedException) =>
+    public static TheoryData CriticalDependencyExceptions()
+    {
+        string someMessage = GetRandomString();
+        var someResponseMessage = new HttpResponseMessage();
+
+        return new TheoryData<Xeption>()
+            {
+                new HttpResponseUrlNotFoundException(someResponseMessage, someMessage),
+                new HttpResponseUnauthorizedException(someResponseMessage, someMessage),
+                new HttpResponseForbiddenException(someResponseMessage, someMessage),
+            };
+    }
+
+    private static string GetRandomString() =>
+        new MnemonicString().GetValue();
+
+    private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
            actucalException => actucalException.SameExceptionAs(expectedException);
 
 
@@ -46,5 +58,11 @@ public partial class BikeServiceTests
         filler.Setup().OnType<DateTimeOffset>().Use(dateTime);
 
         return filler;
+    }
+    private static Dictionary<string, List<string>> CreateRandomDictionary()
+    {
+        var filler = new Filler<Dictionary<string, List<string>>>();
+
+        return filler.Create();
     }
 }
