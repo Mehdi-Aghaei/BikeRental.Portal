@@ -1,5 +1,26 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@page "/TestBike"
+@using BikeRental.Portal.Web.Models.Bikes
 
-<div class ="alert alert-success">
-    @Info
-</div>
+<h2>Create Bike</h2>
+
+<section class= "test-bike">
+
+    <EditForm Model="@Bike" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit">
+        <div class="form-group row">
+            <label for="brand" class="col-sm-3">Brand: </label>
+        </div>
+        <InputText id="brand" class="form-control col-sm-8" @bind-Value="@Bike.Brand" placeholder="enter Brand"></InputText>
+        
+        <div class="form-group row">
+            <label for="category" class="col-sm-3">Category: </label>
+        </div>
+        <InputSelect id="brand" class="form-control col-sm-8" @bind-Value="@Bike.Category">
+            <option value="@(Category.Standard)">Standard</option>
+            <option value="@(Category.Trecking)">Tracking</option>
+            <option value="@(Category.Racing)">Racing</option>
+            <option value="@(Category.Mountain)">Mountain</option>
+        </InputSelect>
+        <br />
+        <button type="submit" class="btn btn-primary edit-btn">Save Bike</button>
+    </EditForm>
+</section>
