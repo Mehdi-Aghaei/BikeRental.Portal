@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using BikeRental.Portal.Web.Models.Bikes;
+﻿using BikeRental.Portal.Web.Models.Bikes;
 using BikeRental.Portal.Web.Models.Bikes.Exceptions;
 using FluentAssertions;
 using Moq;
@@ -65,7 +64,7 @@ public partial class BikeServiceTests
 
         httpResponseBadRequestException.AddData(randomDictionary);
 
-        var invalidBikeException = 
+        var invalidBikeException =
             new InvalidBikeException(httpResponseBadRequestException, randomDictionary);
 
         var expectedBikeDependencyValidationException =
@@ -87,7 +86,7 @@ public partial class BikeServiceTests
             .BeEquivalentTo(expectedBikeDependencyValidationException);
 
         this.apiBrokerMock.Verify(broker =>
-            broker.PostBikeAsync(It.IsAny<Bike>()), 
+            broker.PostBikeAsync(It.IsAny<Bike>()),
                 Times.Once);
 
         this.loggingBrokerMock.Verify(broker =>

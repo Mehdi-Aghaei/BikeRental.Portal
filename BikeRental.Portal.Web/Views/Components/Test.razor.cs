@@ -19,13 +19,13 @@ public partial class Test
 
         return base.OnInitializedAsync();
     }
-    
+
     protected async Task HandleValidSubmit()
     {
-        
-    } 
+
+    }
     protected async Task HandleInvalidSubmit()
     {
-        
+
     }
 }

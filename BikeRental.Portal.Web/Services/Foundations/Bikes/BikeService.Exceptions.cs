@@ -32,7 +32,7 @@ public partial class BikeService
                 new FailedBikeDependencyException(httpResponseUnauthorizedException);
 
             throw CreateAndLogCriticalDependencyException(failedBikeDependencyException);
-            
+
         }
         catch (HttpResponseForbiddenException httpResponseForbiddenException)
         {
@@ -41,7 +41,7 @@ public partial class BikeService
 
             throw CreateAndLogCriticalDependencyException(failedBikeDependencyException);
         }
-        catch(HttpResponseBadRequestException httpResponseBadRequestException)
+        catch (HttpResponseBadRequestException httpResponseBadRequestException)
         {
             var invalidBikeException = new InvalidBikeException(
                    httpResponseBadRequestException,
@@ -49,7 +49,7 @@ public partial class BikeService
 
             throw CreateAndLogDependencyValidationException(invalidBikeException);
         }
-        catch(HttpResponseException HttpResponseException)
+        catch (HttpResponseException HttpResponseException)
         {
             var failedBikeDependencyException =
                 new FailedBikeDependencyException(HttpResponseException);
